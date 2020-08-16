@@ -27,7 +27,7 @@ async function createFile(filename, options) {
 async function createGitignore(options) {
   const file = fs.createWriteStream(
     path.join(options.targetDirectory, '.gitignore'),
-    { flags: 'a' },
+    { flags: 'a' }
   );
   return writeGitignore({
     type: 'Node',
@@ -43,6 +43,15 @@ async function createPackageJSON(options) {
     return Promise.reject(new Error('Failed to create package.json'));
   }
   return;
+}
+
+async function createProjectFolders(options) {
+  const initDirectory = path
+    .resolve(new URL(import.meta.url).pathname, '../../templates/init')
+    .replace(/C:\\C:/g, 'C:');
+  return copy(initDirectory, options.targetDirectory, {
+    clobber: false,
+  });
 }
 
 async function installDependencies(options) {
@@ -61,23 +70,6 @@ export async function createProject(options) {
     targetDirectory: options.targetDirectory || process.cwd(),
   };
 
-  const eslintDirectory = path
-    .resolve(
-      new URL(import.meta.url).pathname,
-      '../../templates/eslint',
-      options.eslint.toLowerCase(),
-    )
-    .replace(/C:\\C:/g, 'C:');
-  options.eslintDirectory = eslintDirectory;
-
-  try {
-    await access(eslintDirectory, fs.constants.R_OK);
-  } catch (err) {
-    console.log(eslintDirectory);
-    console.error('%s Invalid template name', chalk.red.bold('ERROR'));
-    process.exit(1);
-  }
-
   const listrTasks = [
     {
       title: 'Create package.json',
@@ -86,24 +78,44 @@ export async function createProject(options) {
     {
       title: `Install dependenc${
         options.dependencies.length === 1 ? 'y' : 'ies'
-      } ${options.dependencies.map(a => `"${a}"`).join(', ')}`,
+      } ${options.dependencies.map((a) => `"${a}"`).join(', ')}`,
       task: () => installDependencies(options),
     },
     {
       title: 'Create gitignore',
       task: () => createGitignore(options),
     },
-    {
-      title: 'Create .eslintrc.js',
-      task: () => copyEslintFile(options),
-    },
   ];
+
+  if (options.eslint) {
+    const eslintDirectory = path
+      .resolve(new URL(import.meta.url).pathname, '../../templates/eslint')
+      .replace(/C:\\C:/g, 'C:');
+    options.eslintDirectory = eslintDirectory;
+
+    try {
+      await access(eslintDirectory, fs.constants.R_OK);
+      listrTasks.push({
+        title: 'Create .eslintrc.js',
+        task: () => copyEslintFile(options),
+      });
+    } catch (err) {
+      console.log(eslintDirectory);
+      console.error('%s Invalid template name', chalk.red.bold('ERROR'));
+      process.exit(1);
+    }
+  }
 
   if (options.dependencies.indexOf('dotenv') !== -1)
     listrTasks.push({
       title: 'Create .env',
       task: () => createFile('.env', options),
     });
+
+  listrTasks.push({
+    title: 'Copy project folders',
+    task: () => createProjectFolders(options),
+  });
 
   const tasks = new Listr(listrTasks, {
     exitOnError: false,

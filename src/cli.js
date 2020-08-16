@@ -10,7 +10,7 @@ function parseArgumentsIntoOptions(rawArgs) {
     },
     {
       argv: rawArgs.slice(2),
-    },
+    }
   );
   return {
     skipPrompts: args['--yes'] || false,
@@ -18,8 +18,14 @@ function parseArgumentsIntoOptions(rawArgs) {
 }
 
 async function promptForMissingOptions(options) {
-  const defaultEslint = 'Windows';
-  const defaultDependencies = ['dotenv', 'esm', 'express'];
+  const defaultEslint = true;
+  const defaultDependencies = [
+    'dotenv',
+    'ejs',
+    'esm',
+    'express',
+    'less-middleware',
+  ];
   if (options.skipPrompts) {
     return {
       ...options,
@@ -31,10 +37,9 @@ async function promptForMissingOptions(options) {
   const questions = [];
   if (!options.eslint) {
     questions.push({
-      type: 'list',
+      type: 'confirm',
       name: 'eslint',
-      message: 'What line endings do you use?',
-      choices: ['Unix', 'Windows'],
+      message: 'Add eslint file?',
       default: defaultEslint,
     });
   }
@@ -43,7 +48,7 @@ async function promptForMissingOptions(options) {
       type: 'checkbox',
       message: 'Select dependencies',
       name: 'dependencies',
-      choices: defaultDependencies.map(name => {
+      choices: defaultDependencies.map((name) => {
         return {
           checked: true,
           name,
