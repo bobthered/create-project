@@ -2,9 +2,6 @@ import arg from 'arg';
 import inquirer from 'inquirer';
 import { createProject } from './main';
 
-// TODO: Template type
-// TODO: 1. npm project
-
 const defaults = {
   dependencies: ['dotenv', 'ejs', 'esm', 'express', 'less-middleware'],
   dotenv: true,

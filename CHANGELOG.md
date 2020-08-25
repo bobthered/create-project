@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.2
+
+### Changed
+
+- "npm" type file structure
+
+---
+
 ## 0.3.1
 
 ### Fixed
