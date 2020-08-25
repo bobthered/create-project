@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.4
+
+### Fixed
+
+- "files" in package.json typo
+
+---
+
 ## 0.2.3
 
 ### Added

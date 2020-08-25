@@ -1,6 +1,6 @@
 {
   "name": "@bobthered/create-project",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A CLI to bootstrap my new projects",
   "main": "src/index.js",
   "bin": "bin/create-project",
@@ -34,7 +34,7 @@
     "bin/",
     "src/",
     "includes/*",
-    "teamplates/*"
+    "templates/*"
   ],
   "devDependencies": {
     "eslint": "^7.6.0"
