@@ -10,7 +10,7 @@ const defaults = {
   dotenv: true,
   eslint: true,
   gitignore: true,
-  type: 'npm',
+  type: 'express',
 };
 
 function parseArgumentsIntoOptions(rawArgs) {
@@ -47,7 +47,7 @@ async function promptForMissingOptions(options) {
       type: 'list',
       name: 'type',
       message: 'Project Type?',
-      choices: ['npm'],
+      choices: ['express', 'npm'],
       default: 0,
     });
   }

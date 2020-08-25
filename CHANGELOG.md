@@ -1,14 +1,18 @@
 # Changelog
 
+## 0.3.1
+
+### Fixed
+
+- type options to include "express"
+
+---
+
 ## 0.3.0
 
 ### Added
 
 - Template type "express"
-
-### Fixed
-
-- "files" in package.json typo
 
 ---
 
