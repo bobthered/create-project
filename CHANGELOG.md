@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.3
+
+### Added
+
+- "includes/_", "templates/_" to "files" in package.json
+
+---
+
 ## 0.2.2
 
 ### Fixed
