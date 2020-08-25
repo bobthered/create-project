@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0
+
+### Added
+
+- Template type "express"
+
+### Fixed
+
+- "files" in package.json typo
+
+---
+
 ## 0.2.4
 
 ### Fixed

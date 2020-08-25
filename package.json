@@ -1,6 +1,6 @@
 {
   "name": "@bobthered/create-project",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "A CLI to bootstrap my new projects",
   "main": "src/index.js",
   "bin": "bin/create-project",
@@ -17,18 +17,14 @@
   "author": "Bob McAleavey <bobmcaleavey@gmail.com> (https://bobthered.com)",
   "license": "MIT",
   "dependencies": {
-    "add-dependencies": "^1.1.0",
     "arg": "^4.1.0",
     "chalk": "^2.4.2",
-    "covgen": "^3.1.0",
     "esm": "^3.2.18",
     "execa": "^1.0.0",
     "gitignore": "^0.6.0",
     "inquirer": "^6.2.2",
     "listr": "^0.14.3",
-    "ncp": "^2.0.0",
-    "pkg-install": "^0.2.0",
-    "spdx-license-list": "^5.0.0"
+    "ncp": "^2.0.0"
   },
   "files": [
     "bin/",
@@ -38,5 +34,13 @@
   ],
   "devDependencies": {
     "eslint": "^7.6.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bobthered/create-project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bobthered/create-project/issues"
+  },
+  "homepage": "https://github.com/bobthered/create-project#readme"
 }
