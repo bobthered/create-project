@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.2
+
+### Fixed
+
+- Paths corrected for npm package
+
+---
+
 ## 0.2.1
 
 ### Updated

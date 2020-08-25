@@ -7,28 +7,12 @@ import ncp from 'ncp';
 import path from 'path';
 import { promisify } from 'util';
 
-const access = promisify(fs.access);
 const copy = promisify(ncp);
-// const readFile = promisify(fs.readFile);
 const writeGitignore = promisify(gitignore.writeFile);
 
 async function copyEslintFile(options) {
-  const eslintDirectory = path
-    .resolve(new URL(import.meta.url).pathname, '../../includes/eslint')
-    .replace(/C:\\C:/g, 'C:');
-  options.eslintDirectory = eslintDirectory;
-
-  try {
-    await access(eslintDirectory, fs.constants.R_OK);
-  } catch (err) {
-    console.log(eslintDirectory);
-    console.error('%s Invalid template name', chalk.red.bold('ERROR'));
-    process.exit(1);
-  }
-
-  return copy(options.eslintDirectory, options.targetDirectory, {
-    clobber: false,
-  });
+  const directory = path.join(__dirname, '../includes/eslint');
+  return copy(directory, options.targetDirectory, { clobber: false });
 }
 
 async function createFile(filename, options) {
@@ -60,16 +44,8 @@ async function createPackageJSON(options) {
 }
 
 async function createProjectType(options) {
-  const directory = path
-    .resolve(
-      new URL(import.meta.url).pathname,
-      `../../templates/${options.type}`,
-    )
-    .replace(/C:\\C:/g, 'C:');
-  console.log(directory);
-  return copy(directory, options.targetDirectory, {
-    clobber: false,
-  });
+  const directory = path.join(__dirname, `../templates/${options.type}`);
+  return copy(directory, options.targetDirectory, { clobber: false });
 }
 
 async function installDependencies(options) {
@@ -132,6 +108,7 @@ export async function createProject(options) {
     exitOnError: false,
   });
 
+  // createProjectType(options);
   await tasks.run();
   console.log('%s Project ready', chalk.green.bold('DONE'));
   return true;
