@@ -1,6 +1,6 @@
 {
   "name": "@bobthered/create-project",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A CLI to bootstrap my new projects",
   "main": "src/index.js",
   "bin": "bin/create-project",

@@ -5,11 +5,7 @@ Personal CLI to bootstrap new projects
 ## Installation
 
 ```bash
-# Clone Repository
-git clone https://github.com/bobthered/create-project.git
-
-# Make CLI available in terminal
-npm link
+npm install @bobthered/create-project [-g]
 ```
 
 ## Basic Usage

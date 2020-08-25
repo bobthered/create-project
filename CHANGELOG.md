@@ -1,10 +1,20 @@
 # Changelog
 
+## 0.2.1
+
+### Updated
+
+- README.md installation instructions
+
+---
+
 ## 0.2.0
 
 ### Added
 
 - Template type 'npm'
+
+---
 
 ## 0.1.1
 
@@ -12,6 +22,8 @@
 
 - Fixed template path from: <Br>app.set('views', path.join(**dirname, '../public/views/'));<br>
   app.set('views', path.join(**dirname, '../public/views/pages'));
+
+---
 
 ## 0.1.0
 
@@ -24,6 +36,8 @@
 ### Changed
 
 - eslint prompt from list to confirm
+
+---
 
 ## 0.0.1
 
