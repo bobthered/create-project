@@ -2,6 +2,17 @@ import arg from 'arg';
 import inquirer from 'inquirer';
 import { createProject } from './main';
 
+// TODO: Template type
+// TODO: 1. npm project
+
+const defaults = {
+  dependencies: ['dotenv', 'ejs', 'esm', 'express', 'less-middleware'],
+  dotenv: true,
+  eslint: true,
+  gitignore: true,
+  type: 'npm',
+};
+
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(
     {
@@ -10,7 +21,7 @@ function parseArgumentsIntoOptions(rawArgs) {
     },
     {
       argv: rawArgs.slice(2),
-    }
+    },
   );
   return {
     skipPrompts: args['--yes'] || false,
@@ -18,50 +29,79 @@ function parseArgumentsIntoOptions(rawArgs) {
 }
 
 async function promptForMissingOptions(options) {
-  const defaultEslint = true;
-  const defaultDependencies = [
-    'dotenv',
-    'ejs',
-    'esm',
-    'express',
-    'less-middleware',
-  ];
   if (options.skipPrompts) {
     return {
       ...options,
-      eslint: options.eslint || defaultEslint,
-      dependencies: options.dependencies || defaultDependencies,
+      dependencies: options.dependencies || defaults.dependencies,
+      dotenv: options.dotenv || defaults.dotenv,
+      eslint: options.eslint || defaults.eslint,
+      gitignore: options.gitignore || defaults.gitignore,
+      type: options.type || defaults.type,
     };
   }
 
   const questions = [];
+
+  if (!options.type) {
+    questions.push({
+      type: 'list',
+      name: 'type',
+      message: 'Project Type?',
+      choices: ['npm'],
+      default: 0,
+    });
+  }
+
+  if (!options.dotenv) {
+    questions.push({
+      type: 'confirm',
+      name: 'dotenv',
+      message: 'Add .env?',
+      default: defaults.dotenv,
+    });
+  }
+
   if (!options.eslint) {
     questions.push({
       type: 'confirm',
       name: 'eslint',
-      message: 'Add eslint file?',
-      default: defaultEslint,
+      message: 'Add .eslint?',
+      default: defaults.eslint,
     });
   }
+
+  if (!options.gitignore) {
+    questions.push({
+      type: 'confirm',
+      name: 'gitignore',
+      message: 'Add .gitignore?',
+      default: defaults.gitignore,
+    });
+  }
+
   if (!options.dependencies) {
     questions.push({
       type: 'checkbox',
-      message: 'Select dependencies',
       name: 'dependencies',
-      choices: defaultDependencies.map((name) => {
+      message: 'Choose Dependencies:',
+      choices: defaults.dependencies.map(depencency => {
         return {
+          name: depencency,
           checked: true,
-          name,
         };
       }),
     });
   }
 
   const answers = await inquirer.prompt(questions);
+
   return {
     ...options,
-    eslint: options.eslint || answers.eslint,
     dependencies: options.dependencies || answers.dependencies,
+    dotenv: options.dotenv || answers.dotenv,
+    eslint: options.eslint || answers.eslint,
+    gitignore: options.gitignore || answers.gitignore,
+    type: options.type || answers.type,
   };
 }
 
@@ -70,5 +110,3 @@ export async function cli(args) {
   options = await promptForMissingOptions(options);
   await createProject(options);
 }
-
-// ...

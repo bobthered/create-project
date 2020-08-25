@@ -1,6 +1,6 @@
 {
   "name": "@bobthered/create-project",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "A CLI to bootstrap my new projects",
   "main": "src/index.js",
   "bin": "bin/create-project",
@@ -17,6 +17,7 @@
   "author": "Bob McAleavey <bobmcaleavey@gmail.com> (https://bobthered.com)",
   "license": "MIT",
   "dependencies": {
+    "add-dependencies": "^1.1.0",
     "arg": "^4.1.0",
     "chalk": "^2.4.2",
     "covgen": "^3.1.0",

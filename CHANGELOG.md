@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0
+
+### Added
+
+- Template type 'npm'
+
 ## 0.1.1
 
 ### Fix

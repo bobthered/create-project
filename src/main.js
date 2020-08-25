@@ -9,9 +9,23 @@ import { promisify } from 'util';
 
 const access = promisify(fs.access);
 const copy = promisify(ncp);
+// const readFile = promisify(fs.readFile);
 const writeGitignore = promisify(gitignore.writeFile);
 
 async function copyEslintFile(options) {
+  const eslintDirectory = path
+    .resolve(new URL(import.meta.url).pathname, '../../includes/eslint')
+    .replace(/C:\\C:/g, 'C:');
+  options.eslintDirectory = eslintDirectory;
+
+  try {
+    await access(eslintDirectory, fs.constants.R_OK);
+  } catch (err) {
+    console.log(eslintDirectory);
+    console.error('%s Invalid template name', chalk.red.bold('ERROR'));
+    process.exit(1);
+  }
+
   return copy(options.eslintDirectory, options.targetDirectory, {
     clobber: false,
   });
@@ -27,7 +41,7 @@ async function createFile(filename, options) {
 async function createGitignore(options) {
   const file = fs.createWriteStream(
     path.join(options.targetDirectory, '.gitignore'),
-    { flags: 'a' }
+    { flags: 'a' },
   );
   return writeGitignore({
     type: 'Node',
@@ -45,11 +59,15 @@ async function createPackageJSON(options) {
   return;
 }
 
-async function createProjectFolders(options) {
-  const initDirectory = path
-    .resolve(new URL(import.meta.url).pathname, '../../templates/init')
+async function createProjectType(options) {
+  const directory = path
+    .resolve(
+      new URL(import.meta.url).pathname,
+      `../../templates/${options.type}`,
+    )
     .replace(/C:\\C:/g, 'C:');
-  return copy(initDirectory, options.targetDirectory, {
+  console.log(directory);
+  return copy(directory, options.targetDirectory, {
     clobber: false,
   });
 }
@@ -59,7 +77,7 @@ async function installDependencies(options) {
     cwd: options.targetDirectory,
   });
   if (result.failed) {
-    return Promise.reject(new Error('Failed to create package.json'));
+    return Promise.reject(new Error('Failed to install dependencies'));
   }
   return;
 }
@@ -70,52 +88,45 @@ export async function createProject(options) {
     targetDirectory: options.targetDirectory || process.cwd(),
   };
 
-  const listrTasks = [
-    {
-      title: 'Create package.json',
-      task: () => createPackageJSON(options),
-    },
-    {
-      title: `Install dependenc${
-        options.dependencies.length === 1 ? 'y' : 'ies'
-      } ${options.dependencies.map((a) => `"${a}"`).join(', ')}`,
-      task: () => installDependencies(options),
-    },
-    {
-      title: 'Create gitignore',
-      task: () => createGitignore(options),
-    },
-  ];
+  const listrTasks = [];
 
-  if (options.eslint) {
-    const eslintDirectory = path
-      .resolve(new URL(import.meta.url).pathname, '../../templates/eslint')
-      .replace(/C:\\C:/g, 'C:');
-    options.eslintDirectory = eslintDirectory;
+  listrTasks.push({
+    title: 'Create package.json',
+    task: () => createPackageJSON(options),
+  });
 
-    try {
-      await access(eslintDirectory, fs.constants.R_OK);
-      listrTasks.push({
-        title: 'Create .eslintrc.js',
-        task: () => copyEslintFile(options),
-      });
-    } catch (err) {
-      console.log(eslintDirectory);
-      console.error('%s Invalid template name', chalk.red.bold('ERROR'));
-      process.exit(1);
-    }
-  }
-
-  if (options.dependencies.indexOf('dotenv') !== -1)
+  if (options.dotenv) {
     listrTasks.push({
       title: 'Create .env',
       task: () => createFile('.env', options),
     });
+  }
+
+  if (options.eslint) {
+    listrTasks.push({
+      title: 'Create .eslintrc.js',
+      task: () => copyEslintFile(options),
+    });
+  }
+
+  if (options.gitignore) {
+    listrTasks.push({
+      title: 'Create .gitignore',
+      task: () => createGitignore(options),
+    });
+  }
 
   listrTasks.push({
-    title: 'Copy project folders',
-    task: () => createProjectFolders(options),
+    title: `Create '${options.type}' project`,
+    task: () => createProjectType(options),
   });
+
+  if (options.dependencies.length > 0) {
+    listrTasks.push({
+      title: 'Install dependencies',
+      task: () => installDependencies(options),
+    });
+  }
 
   const tasks = new Listr(listrTasks, {
     exitOnError: false,
