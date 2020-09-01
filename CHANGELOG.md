@@ -1,10 +1,19 @@
 # Changelog
 
+## 0.3.5
+
+### Added
+
+- "rollup.config.js" to "express" template
+- "tailwind.config.js" to "express" template
+
+---
+
 ## 0.3.4
 
 ### Fix
 
-- Defaul dependencies
+- Default dependencies
 
 ---
 
