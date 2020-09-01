@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.3
+
+### Added
+
+- "@bobthered/tailwindcss-palette-generator" dependency
+- "nodemon" dependency
+- "@rollup/plugin-commonjs" dependency
+- "@rollup/plugin-node-resolve" dependency
+- "rollup-plugin-terser" dependency
+- "tailwindcss" dependency
+
+---
+
 ## 0.3.2
 
 ### Changed
