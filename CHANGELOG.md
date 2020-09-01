@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.4
+
+### Fix
+
+- Defaul dependencies
+
+---
+
 ## 0.3.3
 
 ### Added

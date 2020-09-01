@@ -1,14 +1,14 @@
 {
   "name": "@bobthered/create-project",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A CLI to bootstrap my new projects",
-  "main": "src/index.js",
+  "main": "src/cli.js",
   "bin": "bin/create-project",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node bin/create-project"
   },
   "keywords": [
     "cli",

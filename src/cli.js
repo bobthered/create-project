@@ -1,9 +1,10 @@
 import arg from 'arg';
 import inquirer from 'inquirer';
 import { createProject } from './main';
+import dependencies from './dependencies';
 
 const defaults = {
-  dependencies: ['dotenv', 'ejs', 'esm', 'express', 'less-middleware'],
+  dependencies: dependencies.map(depencency => depencency.name),
   dotenv: true,
   eslint: true,
   gitignore: true,
