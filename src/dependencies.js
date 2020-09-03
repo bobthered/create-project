@@ -33,6 +33,10 @@ const dependencies = [
   },
   {
     checked: true,
+    name: 'rollup',
+  },
+  {
+    checked: true,
     name: '@rollup/plugin-commonjs',
   },
   {

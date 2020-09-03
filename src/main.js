@@ -34,13 +34,43 @@ async function createGitignore(options) {
 }
 
 async function createPackageJSON(options) {
-  const result = await execa('npm', ['init', '-y'], {
-    cwd: options.targetDirectory,
-  });
-  if (result.failed) {
-    return Promise.reject(new Error('Failed to create package.json'));
+  const obj = {
+    name: options.targetDirectory.split(/\\|\//g).slice(-1)[0],
+    version: '0.0.1',
+    description: '',
+    main: 'server/index.js',
+    scripts: {
+      'build:twcss':
+        'tailwindcss build src/lib/tailwindcss/tailwind.css -o src/lib/tailwindcss/tailwind.compiled.css',
+      'dev':
+        'nodemon' in options.dependencies
+          ? 'nodemon server/index.js'
+          : 'node server/index.js',
+    },
+    author: 'Bob McAleavey <bobmcaleavey@gmail.com> (https://bobthered.com)',
+    license: 'MIT',
+  };
+
+  const json = JSON.stringify(obj);
+
+  try {
+    console.log(`${options.targetDirectory}/package.json`);
+    await fs.writeFile(
+      `${options.targetDirectory}/package.json`,
+      json,
+      'utf8',
+      () => {},
+    );
+  } catch (error) {
+    console.error(error);
   }
-  return;
+  // const result = await execa('npm', ['init', '-y'], {
+  //   cwd: options.targetDirectory,
+  // });
+  // if (result.failed) {
+  //   return Promise.reject(new Error('Failed to create package.json'));
+  // }
+  // return;
 }
 
 async function createProjectType(options) {

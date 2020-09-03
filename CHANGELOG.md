@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.6
+
+### Added
+
+- "nodemon.json" to "express" template
+
+---
+
 ## 0.3.5
 
 ### Added
